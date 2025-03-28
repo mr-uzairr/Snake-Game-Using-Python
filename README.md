@@ -20,7 +20,4 @@ pip install pygame
    
 2. Use arrow keys to move the snake.  
 3. Eat food to grow and increase your score.  
-4. Avoid colliding with walls or yourself!  
-
-## Screenshot  
-(Attach a screenshot of the game here for better visualization.)
+4. Avoid colliding with yourself!  
