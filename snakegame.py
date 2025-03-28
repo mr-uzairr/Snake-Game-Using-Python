@@ -287,5 +287,70 @@ def respawnApples(apples , quantity , sx ,sy):
 def main():
     score = 0
 
+#initialisation of snake
+
+    mySnake = snake(SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
+    mySnake.setDirection(KEY["UP"])
+    mySnake.move()
+    start_segments = 3   # initially we will be having 3 segment long snake
+    while(start_segments > 0):
+        mySnake.grow()
+        mySnake.move()
+        start_segments -=1
 
 
+    # food
+    max_apples = 1  # 1 apple when snake eats 
+    eaten_apple = False   # as snake will eat food apple will be disappear
+    apples = [Apple(random.randint(60,SCREEN_WIDTH), random.randint(60,SCREEN_HEIGHT),1)]
+    respawnApples(apples,max_apples , mySnake.x , mySnake.y)
+
+    startTime = pygame.time.get_ticks()
+    endgame = 0
+
+    while(endgame != 1):
+        gameClock.tick(FPS)
+
+        # input
+        keyPress = getKey()
+        if keyPress == "exit":
+            endgame = 1
+
+        # to check collision
+        checkLimits(mySnake)
+        if(mySnake.checkCrashing() == True):
+            endGame()
+
+        for myApple in apples:
+            if(myApple.state == 1):
+                if(checkCollision(mySnake.getHead(),SNAKE_SIZE,myApple,APPLE_SIZE)==True):
+                    mySnake.grow()
+                    myApple.state = 0
+                    score += 10
+                    eaten_apple = True
+
+        # update position
+        if(keyPress):
+            mySnake.setDirection(keyPress)
+        mySnake.move()
+
+        # respawning food 
+        if(eaten_apple == True):
+            eaten_apple = False
+            respawnApple(apples , 0 , mySnake.getHead().x , mySnake.getHead().y)
+
+        #drawing
+        screen.fill(background_color)
+        for myApple in apples:
+            if(myApple.state == 1):
+                myApple.draw(screen)
+        
+        mySnake.draw(screen)
+        drawScore(score)
+        gameTime = pygame.time.get_ticks() - startTime
+        drawGameTime(gameTime)
+
+        pygame.display.flip()
+        pygame.display.update()
+
+main()
