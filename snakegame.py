@@ -287,7 +287,8 @@ def respawnApples(apples , quantity , sx ,sy):
 def main():
     score = 0
 
-#initialisation of snake
+
+    #initialisation of snake
 
     mySnake = snake(SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
     mySnake.setDirection(KEY["UP"])
